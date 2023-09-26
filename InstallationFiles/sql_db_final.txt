@@ -1,0 +1,274 @@
+-- MySQL dump 10.13  Distrib 5.6.24, for Win32 (x86)
+--
+-- Host: mysql.cs.nott.ac.uk    Database: psxev3_traffic
+-- ------------------------------------------------------
+-- Server version	5.5.60-MariaDB
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `fine`
+--
+
+DROP TABLE IF EXISTS `fine`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `fine` (
+  `fine_id` int(11) NOT NULL AUTO_INCREMENT,
+  `fine_amount` int(11) NOT NULL,
+  `fine_points` int(11) NOT NULL,
+  `incident_id` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`fine_id`),
+  KEY `fk_incident_id_fine_idx` (`incident_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `fine`
+--
+
+LOCK TABLES `fine` WRITE;
+/*!40000 ALTER TABLE `fine` DISABLE KEYS */;
+INSERT INTO `fine` VALUES (1,2000,6,3),(2,50,0,2),(3,500,3,4),(7,800,4,4),(13,800,3,8);
+/*!40000 ALTER TABLE `fine` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `incident`
+--
+
+DROP TABLE IF EXISTS `incident`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `incident` (
+  `incident_id` int(11) NOT NULL AUTO_INCREMENT,
+  `people_id` int(11) NOT NULL,
+  `vehicle_id` int(11) NOT NULL,
+  `incident_date` date NOT NULL,
+  `incident_report` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
+  `offence_id` int(11) NOT NULL,
+  PRIMARY KEY (`incident_id`,`people_id`,`vehicle_id`),
+  KEY `fk_incident_offence` (`offence_id`),
+  KEY `fk_incident_people_idx` (`people_id`),
+  KEY `fk_incident_vehicle_idx` (`vehicle_id`),
+  CONSTRAINT `fk_incident_people` FOREIGN KEY (`people_id`) REFERENCES `people` (`people_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_incident_vehicle` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicle` (`vehicle_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `incident_ibfk_1` FOREIGN KEY (`offence_id`) REFERENCES `offence` (`offence_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `incident`
+--
+
+LOCK TABLES `incident` WRITE;
+/*!40000 ALTER TABLE `incident` DISABLE KEYS */;
+INSERT INTO `incident` VALUES (1,4,15,'2017-12-01','50mph in a 30 limit',1),(2,8,20,'2017-11-01','Double parked',4),(3,4,13,'2017-09-17','110mph on motorway',1),(4,2,14,'2017-08-22','Failure to stop at a red light - travelling 25mph',8),(5,4,13,'2017-10-17','Not wearing a seatbelt on the M1',3),(7,2,12,'2022-01-01','Double parked',4),(8,31,71,'2022-12-12','66mph in a school zone',1),(9,31,71,'2022-12-12','.005 over BA limit',5),(11,31,71,'2022-12-12','Parked in school playground',4);
+/*!40000 ALTER TABLE `incident` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `model`
+--
+
+DROP TABLE IF EXISTS `model`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `model` (
+  `vehicle_model_id` int(11) NOT NULL AUTO_INCREMENT,
+  `vehicle_id` int(11) NOT NULL,
+  `make` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `model` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `colour` varchar(25) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`vehicle_model_id`,`vehicle_id`),
+  KEY `fk_model` (`vehicle_id`),
+  CONSTRAINT `fk_model` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicle` (`vehicle_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `model`
+--
+
+LOCK TABLES `model` WRITE;
+/*!40000 ALTER TABLE `model` DISABLE KEYS */;
+INSERT INTO `model` VALUES (1,12,'Ford','Fiesta','Blue'),(2,13,'Ferrari','458','Red'),(3,14,'Vauxhall','Astra','Silver'),(4,15,'Honda','Civic','Green'),(5,16,'Toyota','Prius','Silver'),(6,17,'Ford','Mondeo','Black'),(7,18,'Ford','Focus','White'),(8,20,'Nissan','Pulsar','Red'),(9,21,'Renault','Scenic','Silver'),(10,22,'Hyundai','i30','Grey'),(34,55,'Lada','Dacha','White'),(36,57,'Mercury','2','Red'),(37,58,'White Star','Titanic','Black'),(40,17,'Ferrari','Spider','Yellow'),(41,20,'Ferrari','Spider','White'),(49,70,'Ford','Focus','White'),(50,71,'Tesla','Roadster','White');
+/*!40000 ALTER TABLE `model` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `offence`
+--
+
+DROP TABLE IF EXISTS `offence`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `offence` (
+  `offence_id` int(11) NOT NULL,
+  `offence_description` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
+  `offence_maxfine` int(11) NOT NULL,
+  `offence_maxpoints` int(11) NOT NULL,
+  PRIMARY KEY (`offence_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `offence`
+--
+
+LOCK TABLES `offence` WRITE;
+/*!40000 ALTER TABLE `offence` DISABLE KEYS */;
+INSERT INTO `offence` VALUES (1,'Speeding',1000,3),(2,'Speeding on a motorway',2500,6),(3,'Seat belt offence',500,0),(4,'Illegal parking',500,0),(5,'Drink driving',10000,11),(6,'Driving without a licence',10000,0),(7,'Driving without a licence',10000,0),(8,'Traffic light offences',1000,3),(9,'Cycling on pavement',500,0),(10,'Failure to have control of vehicle',1000,3),(11,'Dangerous driving',1000,11),(12,'Careless driving',5000,6),(13,'Dangerous cycling',2500,0);
+/*!40000 ALTER TABLE `offence` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `officer`
+--
+
+DROP TABLE IF EXISTS `officer`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `officer` (
+  `username` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `pass` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `officer`
+--
+
+LOCK TABLES `officer` WRITE;
+/*!40000 ALTER TABLE `officer` DISABLE KEYS */;
+INSERT INTO `officer` VALUES ('claricestartling','quantico'),('daniels','copper99'),('jedhoover','tolson99'),('mcnulty','plod123'),('moreland','fuzz42');
+/*!40000 ALTER TABLE `officer` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ownership`
+--
+
+DROP TABLE IF EXISTS `ownership`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ownership` (
+  `vehicle_id` int(11) NOT NULL,
+  `people_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`vehicle_id`),
+  KEY `ownership_ibfk_2_idx` (`people_id`),
+  KEY `ownership_ibfk_1_idx` (`vehicle_id`),
+  CONSTRAINT `ownership_ibfk_1` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicle` (`vehicle_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `ownership_ibfk_2` FOREIGN KEY (`people_id`) REFERENCES `people` (`people_id`) ON DELETE SET NULL ON UPDATE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ownership`
+--
+
+LOCK TABLES `ownership` WRITE;
+/*!40000 ALTER TABLE `ownership` DISABLE KEYS */;
+INSERT INTO `ownership` VALUES (22,NULL),(58,NULL),(70,NULL),(16,1),(14,2),(12,3),(13,4),(15,4),(17,5),(18,6),(21,7),(20,8),(57,8),(55,22),(71,31);
+/*!40000 ALTER TABLE `ownership` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `people`
+--
+
+DROP TABLE IF EXISTS `people`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `people` (
+  `people_id` int(11) NOT NULL AUTO_INCREMENT,
+  `people_fname` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
+  `people_lname` varchar(25) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `people_license` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `people_address` varchar(150) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`people_id`),
+  UNIQUE KEY `people_license_UNIQUE` (`people_license`)
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `people`
+--
+
+LOCK TABLES `people` WRITE;
+/*!40000 ALTER TABLE `people` DISABLE KEYS */;
+INSERT INTO `people` VALUES (1,'James','Smith','SMITH92LDOFJJ829','23 Barnsdale Road, Leicester'),(2,'Jennifer','Allen','ALLEN88K23KLR9B3','46 Bramcote Drive, Nottingham'),(3,'John','Myers','MYERS99JDW8REWL3','323 Derby Road, Nottingham'),(4,'James','Smith','SMITHR004JFS20TR','26 Devonshire Avenue, Nottingham'),(5,'Terry','Brown','BROWND3PJJ39DLFG','7 Clarke Rd, Nottingham'),(6,'Mary','Adams','ADAMSH9O3JRHH107','38 Thurman St, Nottingham'),(7,'Neil','Becker','BECKE88UPR840F9R','6 Fairfax Close, Nottingham'),(8,'Angela','Smith','SMITH222LE9FJ5DS','30 Avenue Road, Grantham'),(9,'Xene','Medora','MEDORH914ANBB223','22 House Drive, West Bridgford'),(21,'Barry','Block','BLOCK5672834','16 Heron Street, Fishton, New Jersey'),(22,'Yusuf','Islam','ISL5628312','583 Terrible Rd, Peterborough'),(31,'Cat','Stevens','STEVSH9O3JRH8808','12 Rodeo Drive, Hollywood');
+/*!40000 ALTER TABLE `people` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `user_logs`
+--
+
+DROP TABLE IF EXISTS `user_logs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user_logs` (
+  `action_id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `user_action` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
+  `action_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`action_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_logs`
+--
+
+LOCK TABLES `user_logs` WRITE;
+/*!40000 ALTER TABLE `user_logs` DISABLE KEYS */;
+INSERT INTO `user_logs` VALUES (4,'daniels','INSERT_INTO_people__people_fname,_people_lname,_people_license,_people_address__VALUES_\n__________William_,__Wallace_,__WALLACE130542_,__123_Whitetree_Ave,_Godswood__','2022-12-24 05:33:52'),(5,'daniels','INSERT_INTO_people__people_fname,_people_lname,_people_license,_people_address__VALUES_\n__________William_,__Wallace_,__WALLACE130542_,__123_Whitetree_Ave,_Godswood__','2022-12-24 05:39:29'),(6,'','INSERT_INTO_officer__username,_pass__VALUES_\n__________jedhoover_,__tolson99__','2022-12-24 05:40:07'),(7,'daniels','INSERT_INTO_officer__username,_pass__VALUES_\n__________jedhoover_,__tolson99__','2022-12-24 05:42:33'),(8,'daniels','SELECT_*_FROM_incident_WHERE_incident_id=_1__OR_people_id=__','2022-12-26 14:53:26'),(9,'daniels','\n________UPDATE_incident\n____________SET_people_id=_4_,_vehicle_id=_15_,_incident_date=_2017-12-01_,_incident_report=_40mph_in_a_30_limit_,_offence_id=_1_\n________WHERE_incident_id=_1_\n________','2022-12-26 14:53:31'),(10,'daniels','SELECT_*_FROM_incident_WHERE_incident_id=_7__OR_people_id=__','2022-12-26 14:54:40'),(11,'daniels','\n		INSERT_INTO_vehicle__vehicle_plate__VALUE\n		______PZ65PWO__;','2022-12-26 17:39:47'),(12,'daniels','\n		____INSERT_INTO_ownership__vehicle_id__VALUE\n		______11__','2022-12-26 17:39:47'),(13,'daniels','\n		____INSERT_INTO_model__vehicle_id,_make,_model,_colour__VALUES\n		______11_,__Tesla_,__Roadster_,__White__;','2022-12-26 17:39:47'),(14,'daniels','\n		INSERT_INTO_vehicle__vehicle_plate__VALUE\n		______PZ65PWO__;','2022-12-26 17:40:04'),(15,'daniels','\n		____INSERT_INTO_ownership__vehicle_id__VALUE\n		______14__','2022-12-26 17:40:04'),(16,'daniels','\n		____INSERT_INTO_model__vehicle_id,_make,_model,_colour__VALUES\n		______14_,__Tesla_,__Roadster_,__White__;','2022-12-26 17:40:04'),(17,'daniels','\n		INSERT_INTO_vehicle__vehicle_plate__VALUE\n		______YO42OPE__;','2022-12-26 17:44:59'),(18,'daniels','\n		____INSERT_INTO_ownership__vehicle_id__VALUE\n		______17__','2022-12-26 17:44:59'),(19,'daniels','\n		____INSERT_INTO_model__vehicle_id,_make,_model,_colour__VALUES\n		______17_,__Ferrari_,__Spider_,__Yellow__;','2022-12-26 17:44:59'),(20,'daniels','\n		INSERT_INTO_vehicle__vehicle_plate__VALUE\n		______SZ55UYI__;','2022-12-26 17:48:22'),(21,'daniels','\n		____INSERT_INTO_ownership__vehicle_id__VALUE\n		______20__','2022-12-26 17:48:22'),(22,'daniels','\n		____INSERT_INTO_model__vehicle_id,_make,_model,_colour__VALUES\n		______20_,__Ferrari_,__Spider_,__White__;','2022-12-26 17:48:22'),(23,'daniels','\n		INSERT_INTO_vehicle__vehicle_plate__VALUE\n		______SZ55UYI__;','2022-12-26 17:49:48'),(24,'daniels','\n		____INSERT_INTO_ownership__vehicle_id__VALUE\n		______23__','2022-12-26 17:49:48'),(25,'daniels','\n		____INSERT_INTO_model__vehicle_id,_make,_model,_colour__VALUES\n		______23_,__Ferrari_,__Spider_,__White__;','2022-12-26 17:49:48'),(26,'daniels','\n		INSERT_INTO_vehicle__vehicle_plate__VALUE\n		______EL55TU8__;','2022-12-26 17:50:21'),(27,'daniels','\n		____INSERT_INTO_ownership__vehicle_id__VALUE\n		______26__','2022-12-26 17:50:21'),(28,'daniels','\n		____INSERT_INTO_model__vehicle_id,_make,_model,_colour__VALUES\n		______26_,__Ford_,__Focus_,__Red__;','2022-12-26 17:50:21'),(29,'daniels','\n		INSERT_INTO_vehicle__vehicle_plate__VALUE\n		______EL55TU8__;','2022-12-26 17:50:40'),(30,'daniels','\n		____INSERT_INTO_ownership__vehicle_id__VALUE\n		______29__','2022-12-26 17:50:40'),(31,'daniels','\n		____INSERT_INTO_model__vehicle_id,_make,_model,_colour__VALUES\n		______29_,__Ford_,__Focus_,__Red__;','2022-12-26 17:50:40'),(32,'daniels','\n________INSERT_INTO_vehicle__vehicle_plate__VALUE\n__________EL55TU8__;','2022-12-26 17:58:57'),(33,'daniels','\n____________INSERT_INTO_ownership__vehicle_id__VALUE\n______________32__','2022-12-26 17:58:57'),(34,'daniels','\n____________INSERT_INTO_model__vehicle_id,_make,_model,_colour__VALUES\n______________32_,__Ford_,__Focus_,__Red__;','2022-12-26 17:58:57'),(35,'daniels','\n________INSERT_INTO_vehicle__vehicle_plate__VALUE\n__________EL55TU8__;','2022-12-26 18:01:12'),(36,'daniels','\n____________INSERT_INTO_ownership__vehicle_id__VALUE\n______________35__','2022-12-26 18:01:12'),(37,'daniels','\n____________INSERT_INTO_model__vehicle_id,_make,_model,_colour__VALUES\n______________35_,__Ford_,__Focus_,__Red__;','2022-12-26 18:01:12'),(38,'daniels','\n________INSERT_INTO_vehicle__vehicle_plate__VALUE\n__________EL55TU8__;','2022-12-26 18:06:28'),(39,'daniels','\n____________INSERT_INTO_ownership__vehicle_id__VALUE\n______________38__','2022-12-26 18:06:28'),(40,'daniels','\n____________INSERT_INTO_model__vehicle_id,_make,_model,_colour__VALUES\n______________38_,__Ford_,__Focus_,__White__;','2022-12-26 18:06:28'),(41,'daniels','\n________INSERT_INTO_vehicle__vehicle_plate__VALUE\n__________EL55TU8__;','2022-12-26 18:07:22'),(42,'daniels','\n____________INSERT_INTO_ownership__vehicle_id__VALUE\n______________41__','2022-12-26 18:07:22'),(43,'daniels','\n____________INSERT_INTO_model__vehicle_id,_make,_model,_colour__VALUES\n______________41_,__Ford_,__Focus_,__Red__;','2022-12-26 18:07:22'),(44,'daniels','\n________INSERT_INTO_vehicle__vehicle_plate__VALUE\n__________EL55TU8__;','2022-12-26 18:24:26'),(45,'daniels','\n________________INSERT_INTO_ownership__vehicle_id__VALUE\n__________________70__','2022-12-26 18:24:26'),(46,'daniels','\n________________INSERT_INTO_model__vehicle_id,_make,_model,_colour__VALUES\n__________________70_,__Ford_,__Focus_,__White__;','2022-12-26 18:24:26'),(47,'daniels','\n________INSERT_INTO_vehicle__vehicle_plate__VALUE\n__________AP555UIO__;','2022-12-26 19:13:06'),(48,'daniels','\n________________INSERT_INTO_ownership__vehicle_id__VALUE\n__________________71__','2022-12-26 19:13:06'),(49,'daniels','\n________________INSERT_INTO_model__vehicle_id,_make,_model,_colour__VALUES\n__________________71_,__Tesla_,__Roadster_,__White__;','2022-12-26 19:13:06'),(50,'daniels','\n		UPDATE_ownership\n			SET_people_id=_31_\n		WHERE_vehicle_id=_71_\n		','2022-12-26 19:13:42'),(51,'daniels','SELECT_*_FROM_incident_WHERE_incident_id=_1__OR_people_id=__','2022-12-26 19:21:36'),(52,'daniels','\n________UPDATE_incident\n____________SET_people_id=_4_,_vehicle_id=_15_,_incident_date=_2017-12-01_,_incident_report=_40mph_in_a_30_limit_,_offence_id=_1_\n________WHERE_incident_id=_1_\n________','2022-12-26 19:21:43'),(53,'daniels','SELECT_*_FROM_incident_WHERE_incident_id=_1__OR_people_id=__','2022-12-26 19:23:44'),(54,'daniels','\n________UPDATE_incident\n____________SET_people_id=_4_,_vehicle_id=_15_,_incident_date=_2017-12-01_,_incident_report=_50mph_in_a_30_limit_,_offence_id=_1_\n________WHERE_incident_id=_1_\n________','2022-12-26 19:23:50'),(55,'daniels','SELECT_*_FROM_incident_WHERE_incident_id=_1__OR_people_id=__','2022-12-26 19:23:59'),(56,'daniels','\n________INSERT_INTO_incident__people_id,_vehicle_id,_incident_date,_incident_report,_offence_id__VALUES\n__________31_,__71_,__2022-12-12_,___,__1__','2022-12-26 19:25:07'),(57,'daniels','SELECT_*_FROM_incident_WHERE_incident_id=_8__OR_people_id=__','2022-12-26 19:31:00'),(58,'daniels','\n________UPDATE_incident\n____________SET_people_id=_31_,_vehicle_id=_71_,_incident_date=_2022-12-12_,_incident_report=_66mph_in_a_school_zone_,_offence_id=_1_\n________WHERE_incident_id=_8_\n________','2022-12-26 19:31:09'),(59,'daniels','SELECT_*_FROM_incident_WHERE_incident_id=_8__OR_people_id=__','2022-12-26 19:31:15'),(60,'daniels','\n________INSERT_INTO_incident__people_id,_vehicle_id,_incident_date,_incident_report,_offence_id__VALUES\n__________31_,__71_,__2022-12-12_,__.005_over_BA_limit_,__5__','2022-12-26 19:31:51'),(61,'daniels','\n________INSERT_INTO_incident__people_id,_vehicle_id,_incident_date,_incident_report,_offence_id__VALUES\n__________31_,__71_,__2022-12-12_,__Parked_in_school_playground_,__4__','2022-12-26 19:36:12'),(62,'daniels','\n________INSERT_INTO_incident__people_id,_vehicle_id,_incident_date,_incident_report,_offence_id__VALUES\n__________31_,__71_,__2022-12-12_,__Parked_in_school_playground_,__4__','2022-12-26 19:38:13'),(63,'daniels','INSERT_INTO_officer__username,_pass__VALUES_\n__________claricestartling_,__quantico__','2022-12-26 19:43:37'),(64,'daniels','SELECT_*_FROM_incident_WHERE_incident_id=_8__OR_people_id=__','2022-12-26 19:43:53'),(65,'daniels','SELECT_*_FROM_incident_WHERE_incident_id=_8__OR_people_id=__','2022-12-26 19:44:28'),(66,'daniels','INSERT_INTO_fine__incident_id,_fine_amount,_fine_points__VALUES_\n__________8_,__800_,__3__','2022-12-26 19:44:45'),(67,'claricestartling','SELECT_*_FROM_incident_WHERE_incident_id=_8__OR_people_id=__','2022-12-26 19:57:18');
+/*!40000 ALTER TABLE `user_logs` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `vehicle`
+--
+
+DROP TABLE IF EXISTS `vehicle`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `vehicle` (
+  `vehicle_id` int(11) NOT NULL AUTO_INCREMENT,
+  `vehicle_plate` varchar(7) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`vehicle_id`),
+  UNIQUE KEY `vehicle_plate_UNIQUE` (`vehicle_plate`)
+) ENGINE=InnoDB AUTO_INCREMENT=72 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `vehicle`
+--
+
+LOCK TABLES `vehicle` WRITE;
+/*!40000 ALTER TABLE `vehicle` DISABLE KEYS */;
+INSERT INTO `vehicle` VALUES (22,'AD223NG'),(55,'AK47KAL'),(71,'AP555UI'),(21,'BC16OEA'),(18,'DJ14SLE'),(70,'EL55TU8'),(14,'FD65WPQ'),(15,'FJ17AUG'),(16,'FP16KKE'),(17,'FP66KLM'),(12,'LB15AJL'),(13,'MY64PRE'),(20,'NY64KWD'),(57,'ORBI150'),(59,'PZ65PWO'),(62,'SZ55UYI'),(58,'TITA474'),(61,'YO42OPE');
+/*!40000 ALTER TABLE `vehicle` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2022-12-27 16:48:35

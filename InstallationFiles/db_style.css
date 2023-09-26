@@ -1,0 +1,245 @@
+* body {
+    height: 90vh;
+    background-image: url("image/back.jpg");
+    font-family: Courier;
+    }
+    
+#searchlabel {
+    float: flex;
+    font-family: Arial;
+    font-size: 28;
+    font-weight: bold;
+    }
+
+#adminlabel {
+    font-family: Arial;
+    font-size: 28;
+    font-weight: bold;
+    }
+
+
+#searchbutton {
+    height:40px;
+    width:120px;
+    font-weight: bold;
+    background-color: white;
+    float: right;
+    }
+
+#ownerbutton {
+    height:40px;
+    width:120px;
+    font-weight: bold;
+    background-color: white;
+    float: left;
+    }
+    
+#confirmbutton {
+    height:40px;
+    width:120px;
+    font-weight: bold;
+    background-color: white;
+    }
+
+#reporttext {
+    font-weight: bold;
+    }
+    
+#logoutbutton {
+    height:90px;
+    width:120px;
+    font-weight: bold;
+    background-color: yellow;
+    }
+    
+#smalltablevalue {
+    font-size: 10px;
+    }
+    
+#descriptionform {
+    width: 210px;
+    height: 200px;
+    word-wrap: break-line;
+    overflow: fill;
+    }
+    
+#smallinputform {
+    width: 25px;
+    height: 25px;
+    }
+
+.row { 
+    display: flex;
+    flex-direction: row;
+    }
+    
+.column_left {
+    width: 50%;
+    border: groove;
+    height: 50%;
+    background-color: white;
+    }
+    
+.admin_boxes {
+    width: 99.65%;
+    border: groove;
+    height: 40%;
+    background-color: white;
+    }
+    
+.column_right {
+    width: 50%;
+    border: groove;
+    height: 50%;
+    background-color: white;
+    }
+
+.reporting_column_left {
+    width: 40%;
+    border: groove;
+    height: 90%;
+    background-color: white;
+    }
+
+.reporting_column_right {
+    width: 60%;
+    border: groove;
+    height: 90%;
+    background-color: white;
+    }
+    
+.reporting_new_report_column {
+    width: 60%;
+    border: groove;
+    height: 90%;
+    background-color: white;
+    }
+
+.users_table {
+    width: 20%;
+    border: groove;
+    height: 60%;
+    background-color: white;
+
+    }
+    
+.log_search {
+    width: 79%;
+    border: groove;
+    height: 60%;
+    background-color: white;
+
+    }
+
+.admin_panel {
+    width: 360px;
+    float: right;
+    border: groove;
+    height: 100px;
+    background-color: white;
+    }
+    
+.navbar {
+    border-style: solid;
+    border-color: #808080;
+    display: flex;
+    max-height: 94px;
+    }
+    
+.policeimg {
+    width: 1200px;
+    height: 100px;
+    background-image: url("image/header.png");
+    background-repeat: repeat-x;
+    max-height: 94px;
+    }
+    
+.nava {
+    background-color: black;
+    border-style: none solid none none;
+    border-color: #808080;
+    float: left;
+    color: white;
+    text-align: left;
+    padding: 18px 12px;
+    font-family: Arial;
+    font-size: 28px;
+    font-weight: bold;
+    text-decoration: none;
+    min-width: 240px;
+    max-height: 90px;
+    resize: none;
+    }
+    
+.navb {
+    background-color: #0039F5;
+    border-style: none solid none none;
+    border-color: #e6e6e6;
+    float: left;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    padding: 36px 13px;
+    font-size: 16px;
+    font-weight: bold;
+    min-width: 170px;
+    max-height: 90px;
+    resize: none;
+    }
+    
+.navc {
+    background-color: black;
+    border-style: double;
+    border-color: #e6e6e6;
+    font-family: Arial;
+    float: left;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    font-size: 18px;
+    min-width: 120px;
+    font-weight: bold;
+    max-height:90px;
+    }
+
+.navb:hover {
+    background-color: #C9F100;
+    color: black;
+    }
+    
+.navc:hover {
+    background-color: white;
+    color: black;
+    }
+
+form{
+    margin:0px; 
+    padding:0px; 
+    display:inline;
+}
+
+#versionno {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    color: #cccccc;
+    text-align: right;
+    padding: 6px 10px;
+    font-size: 14px;
+    font-weight: italicised;
+}
+
+#dbstatus {
+    float: right;
+    color: black;
+    text-align: right;
+    padding: 6px 10px;
+    font-size: 14px;
+    }
+    
+#centerbox {
+    display: flex;
+    width: 42vw;
+    padding: 48px;
+
+    }
